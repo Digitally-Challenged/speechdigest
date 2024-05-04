@@ -77,38 +77,30 @@ def cleanup_transcript(api_key, transcript, model, custom_prompt=None):
     cleaned_transcript = response['choices'][0]['message']['content']
     return cleaned_transcript
 
-def generate_image_prompt(api_key, user_input):
-    openai.api_key = api_key
+# Streamlit app
+def main():
+    st.title("Audio Transcription and Cleanup")
 
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[{"role": "user", "content": f"Create a text that explains in a lot of details how the meme about this topic would look like: {user_input}"}],
-        temperature=0.7,
-        max_tokens=50,
-    )
+    # Get the Deepgram API key from the user
+    deepgram_api_key = st.text_input("Enter your Deepgram API key:")
 
-    return response['choices'][0]['message']['content']
+    # Get the OpenAI API key from the user
+    openai_api_key = st.text_input("Enter your OpenAI API key:")
 
-def generate_image(api_key, prompt):
-    openai.api_key = api_key
+    # Upload audio file
+    audio_file = st.file_uploader("Upload an audio file", type=["wav", "mp3", "m4a"])
 
-    response = openai.Image.create(
-        prompt=prompt,
-        n=1,
-        size="512x512",
-        response_format="url",
-    )
+    if audio_file is not None:
+        # Transcribe the audio using Deepgram
+        transcript = transcribe_audio(deepgram_api_key, audio_file)
+        st.subheader("Transcription")
+        st.write(transcript)
 
-    return response['data'][0]['url']
+        # Clean up the transcript using GPT-4
+        if st.button("Clean up Transcript"):
+            cleaned_transcript = cleanup_transcript(openai_api_key, transcript, "gpt-4")
+            st.subheader("Cleaned Transcript")
+            st.write(cleaned_transcript)
 
-def generate_images(api_key, prompt, n=4):
-    openai.api_key = api_key
-
-    response = openai.Image.create(
-        prompt=prompt,
-        n=n,
-        size="256x256",
-        response_format="url",
-    )
-
-    return response['data']
+if __name__ == "__main__":
+    main()
