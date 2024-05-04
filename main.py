@@ -1,6 +1,3 @@
-Great! Let's update the `main.py` file to incorporate the brand colors and fonts you specified. Here's the revised version:
-
-```python
 import streamlit as st
 from utils import transcribe_audio, cleanup_transcript
 import theme
