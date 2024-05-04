@@ -1,48 +1,42 @@
 import streamlit as st
-from utils import transcribe_audio, summarize_transcript
+from utils import transcribe_audio, cleanup_transcript
 import theme
 
-
-
-
 # Streamlit app
-st.set_page_config(**theme.page_config)
-
+st.set_page_config(**theme.transcription_config)
 
 title = """
-    <h1 style="color:#32CD32; font-family:sans-serif;">🎙️ Audio Transcription and Summarization 🎙️</h1>
+    <h1 style="color:#32CD32; font-family:sans-serif;">🎙️ Audio Transcription and Cleanup 🎙️</h1>
 """
 st.markdown(title, unsafe_allow_html=True)
-st.write("Upload an audio file, transcribe it using Whisper, and summarize the transcription using your selected model.")
+st.write("Upload an audio file, transcribe it using Deepgram, and clean up the transcription using GPT-4.")
 
-api_key = st.text_input("Enter your OpenAI API key:", type="password")
-models = ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4-0613"]
-model = st.selectbox("Select a model:", models)
+deepgram_api_key = st.text_input("Enter your Deepgram API key:", type="password")
+openai_api_key = st.text_input("Enter your OpenAI API key:", type="password")
 
 uploaded_audio = st.file_uploader("Upload an audio file", type=['m4a', 'mp3', 'webm', 'mp4', 'mpga', 'wav', 'mpeg'], accept_multiple_files=False)
 
 custom_prompt = None
 
-custom_prompt = st.text_input("Enter a custom prompt:", value = "Summarize the following audio transcription:")
+custom_prompt = st.text_input("Enter a custom prompt:", value="Clean up and format the following audio transcription:")
 
-if st.button("Generate Summary"):
+if st.button("Clean up Transcript"):
     if uploaded_audio:
-        if api_key:
+        if deepgram_api_key and openai_api_key:
             st.markdown("Transcribing the audio...")
-            transcript = transcribe_audio(api_key, uploaded_audio)
-            st.markdown(f"###  Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript.text}</code></pre></p></details>", unsafe_allow_html=True)
+            transcript = transcribe_audio(deepgram_api_key, uploaded_audio)
+            st.markdown(f"### Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript}</code></pre></p></details>", unsafe_allow_html=True)
 
-            st.markdown("Summarizing the transcription...")
+            st.markdown("Cleaning up the transcription...")
             if custom_prompt:
-                summary = summarize_transcript(api_key, transcript, model, custom_prompt)
+                cleaned_transcript = cleanup_transcript(openai_api_key, transcript, "gpt-4", custom_prompt)
             else:
-                summary = summarize_transcript(api_key, transcript, model)
-                
-            st.markdown(f"### Summary:")
-            st.write(summary)
-        else:
-            st.error("Please enter a valid OpenAI API key.")
+                cleaned_transcript = cleanup_transcript(openai_api_key, transcript, "gpt-4")
 
+            st.markdown(f"### Cleaned Transcript:")
+            st.write(cleaned_transcript)
+        else:
+            st.error("Please enter valid Deepgram and OpenAI API keys.")
 
 st.markdown(
     """
