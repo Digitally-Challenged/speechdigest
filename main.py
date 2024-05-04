@@ -1,4 +1,4 @@
-Certainly! Here's a revised version of the `main.py` file that incorporates sidebars with additional information:
+Great! Let's update the `main.py` file to incorporate the brand colors and fonts you specified. Here's the revised version:
 
 ```python
 import streamlit as st
@@ -7,6 +7,39 @@ import theme
 
 # Streamlit app
 st.set_page_config(**theme.transcription_config)
+
+# Set brand colors
+primary_color = "#17b0dd"
+secondary_color = "#3d3d6b"
+background_color = "#fefefe"
+
+# Set fonts
+heading_font = "Audiowide"
+body_font = "Arial"
+
+# Custom CSS styles
+st.markdown(
+    f"""
+    <style>
+    h1 {{
+        color: {primary_color};
+        font-family: {heading_font}, sans-serif;
+    }}
+    h3 {{
+        color: {secondary_color};
+        font-family: {heading_font}, sans-serif;
+    }}
+    p, ul, ol {{
+        color: {secondary_color};
+        font-family: {body_font}, sans-serif;
+    }}
+    .sidebar .sidebar-content {{
+        background-color: {background_color};
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Create sidebars
 sidebar_left = st.sidebar.container()
@@ -50,19 +83,14 @@ with sidebar_right:
     )
 
 with main_container:
-    title = """
-        <h1 style="color:#32CD32; font-family:sans-serif;">LexMed: Leveraging AI to Elevate Disability Advocacy to New Heights</h1>
-    """
+    title = f"<h1>LexMed: Leveraging AI to Elevate Disability Advocacy to New Heights</h1>"
     st.markdown(title, unsafe_allow_html=True)
 
-    intro = """
-        <h3 style="color:#32CD32;">Introducing Hearing Echo – A Game-Changer in Hearing Transcription</h3>
-        <p>At LexMed, we are excited to unveil our flagship feature - Hearing Echo! Specially designed for Social Security Disability representatives, Hearing Echo revolutionizes the way you handle hearing transcripts. Say goodbye to the laborious task of manually sifting through hours of audio for key insights. Welcome to an era where high-quality, organized transcripts, akin to those used in Federal Court, are just a few clicks away.</p>
-    """
+    intro = f"<h3>Introducing Hearing Echo – A Game-Changer in Hearing Transcription</h3><p>At LexMed, we are excited to unveil our flagship feature - Hearing Echo! Specially designed for Social Security Disability representatives, Hearing Echo revolutionizes the way you handle hearing transcripts. Say goodbye to the laborious task of manually sifting through hours of audio for key insights. Welcome to an era where high-quality, organized transcripts, akin to those used in Federal Court, are just a few clicks away.</p>"
     st.markdown(intro, unsafe_allow_html=True)
 
     features = """
-        <h3 style="color:#32CD32;">Key Features of Hearing Echo</h3>
+        <h3>Key Features of Hearing Echo</h3>
         <ul>
             <li><strong>Speaker Labeling:</strong> Clear identification and labeling of speakers in the transcript for effortless tracking of who said what.</li>
             <li><strong>Time Stamps:</strong> Every transcript comes with precise time stamps, making it easy to locate specific moments in the hearing.</li>
@@ -73,7 +101,7 @@ with main_container:
     st.markdown(features, unsafe_allow_html=True)
 
     upcoming = """
-        <h3 style="color:#32CD32;">Upcoming Features</h3>
+        <h3>Upcoming Features</h3>
         <ul>
             <li><strong>Expert Auditing:</strong> A robust review system to ensure the accuracy of vocational and medical expert testimonies.</li>
             <li><strong>Procedural Auditing:</strong> Insightful analysis of potential procedural errors by the Administrative Law Judge (ALJ).</li>
@@ -82,7 +110,7 @@ with main_container:
     st.markdown(upcoming, unsafe_allow_html=True)
 
     process = """
-        <h3 style="color:#32CD32;">Our Streamlined Process</h3>
+        <h3>Our Streamlined Process</h3>
         <ol>
             <li><strong>Upload</strong> your .ogg hearing audio file.</li>
             <li><strong>Submit</strong> the audio for transcription.</li>
