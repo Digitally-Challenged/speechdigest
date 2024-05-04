@@ -1,20 +1,13 @@
-page_config = {
-    "page_title": "Speech Digest",
+transcription_config = {
+    "page_title": "Audio Transcription",
     "page_icon": "🎙️",
     "layout": "centered",
     "initial_sidebar_state": "expanded",
 }
 
-meme_config = {
-    "page_title": "Meme Generator",
-    "page_icon": "🎨",
-    "layout": "centered",
-    "initial_sidebar_state": "expanded",
-}
-
-blog_config = {
-    "page_title": "Article Genius",
-    "page_icon": "📝",
+cleanup_config = {
+    "page_title": "Transcript Cleanup",
+    "page_icon": "🧹",
     "layout": "centered",
     "initial_sidebar_state": "expanded",
 }
