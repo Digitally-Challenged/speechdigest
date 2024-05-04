@@ -6,15 +6,51 @@ import theme
 st.set_page_config(**theme.transcription_config)
 
 title = """
-    <h1 style="color:#32CD32; font-family:sans-serif;">🎙️ LexMed Hearing Echo 🎙️</h1>
+    <h1 style="color:#32CD32; font-family:sans-serif;">LexMed: Leveraging AI to Elevate Disability Advocacy to New Heights</h1>
 """
 st.markdown(title, unsafe_allow_html=True)
-st.write("Upload an audio file, transcribe it using Deepgram, and clean up the transcription using GPT-4.")
+
+intro = """
+    <h3 style="color:#32CD32;">Introducing Hearing Echo – A Game-Changer in Hearing Transcription</h3>
+    <p>At LexMed, we are excited to unveil our flagship feature - Hearing Echo! Specially designed for Social Security Disability representatives, Hearing Echo revolutionizes the way you handle hearing transcripts. Say goodbye to the laborious task of manually sifting through hours of audio for key insights. Welcome to an era where high-quality, organized transcripts, akin to those used in Federal Court, are just a few clicks away.</p>
+"""
+st.markdown(intro, unsafe_allow_html=True)
+
+features = """
+    <h3 style="color:#32CD32;">Key Features of Hearing Echo</h3>
+    <ul>
+        <li><strong>Speaker Labeling:</strong> Clear identification and labeling of speakers in the transcript for effortless tracking of who said what.</li>
+        <li><strong>Time Stamps:</strong> Every transcript comes with precise time stamps, making it easy to locate specific moments in the hearing.</li>
+        <li><strong>High Accuracy:</strong> We promise highly accurate transcriptions, capturing each word spoken with meticulous precision.</li>
+        <li><strong>Summary and Calls to Action:</strong> Get not just transcripts, but summaries highlighting the main points and actionable insights for your legal strategy.</li>
+    </ul>
+"""
+st.markdown(features, unsafe_allow_html=True)
+
+upcoming = """
+    <h3 style="color:#32CD32;">Upcoming Features</h3>
+    <ul>
+        <li><strong>Expert Auditing:</strong> A robust review system to ensure the accuracy of vocational and medical expert testimonies.</li>
+        <li><strong>Procedural Auditing:</strong> Insightful analysis of potential procedural errors by the Administrative Law Judge (ALJ).</li>
+    </ul>
+"""
+st.markdown(upcoming, unsafe_allow_html=True)
+
+process = """
+    <h3 style="color:#32CD32;">Our Streamlined Process</h3>
+    <ol>
+        <li><strong>Upload</strong> your .ogg hearing audio file.</li>
+        <li><strong>Submit</strong> the audio for transcription.</li>
+        <li><strong>Relax</strong> and grab a coffee.</li>
+        <li><strong>Download</strong> your transcript in PDF or TXT format, ready for use.</li>
+    </ol>
+"""
+st.markdown(process, unsafe_allow_html=True)
 
 deepgram_api_key = st.text_input("Enter your Deepgram API key:", type="password")
 openai_api_key = st.text_input("Enter your OpenAI API key:", type="password")
 
-uploaded_audio = st.file_uploader("Upload an audio file", type=['m4a', 'mp3', 'webm', 'mp4', 'mpga', 'wav', 'mpeg'], accept_multiple_files=False)
+uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
 
 custom_prompt = None
 
@@ -42,23 +78,7 @@ st.markdown(
     """
     ---
     ### Source code and contact information
-    - The source code for this app can be found on GitHub: [SpeechDigest](https://github.com/StanGirard/speechdigest)
-    - If you have any questions or comments, feel free to reach out to me on Twitter: [@_StanGirard](https://twitter.com/_StanGirard)
+    - The source code for this app can be found on GitHub: [LexMed](https://github.com/StanGirard/lexmed)
+    - If you have any questions or comments, feel free to reach out to Nick Coleman at [LexMed.AI](https://lexmed.ai)
     """
 )
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown(
-        """
-        [![Tweet](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2FStanGirard%2Fspeechdigest)](https://twitter.com/intent/tweet?url=https://github.com/StanGirard/speechdigest&text=Check%20out%20this%20awesome%20Speech%20Digest%20app%20built%20with%20Streamlit!%20%23speechdigest%20%23streamlit)
-        """
-    )
-
-with col2:
-    st.markdown(
-        """
-        [![GitHub Stars](https://img.shields.io/github/stars/StanGirard/speechdigest?style=social)](https://github.com/StanGirard/speechdigest/stargazers)
-        """
-    )
