@@ -62,31 +62,8 @@ with sidebar_left:
     st.image("https://d1yei2z3i6k35z.cloudfront.net/4827292/64fa669297d2f_Untitleddesign41.png")
     st.image("https://d1yei2z3i6k35z.cloudfront.net/4827292/64fa669acb672_Untitleddesign51.png")
 
-    st.markdown(
-        """
-        ### Flexible Pricing
-        - Your first summary is on us, and then just $2/page. For high-volume cases, contact us for bulk discounts.
-        """
-    )
 
 with sidebar_right:
-    st.markdown(
-        """
-        ### Frequently Asked Questions
-        #### Is it Accurate?
-        While generally precise, LexMed's Hearing Echo may occasionally encounter challenges with vague or complex testimonies. We advise reviewing transcripts carefully before official use.
-
-        #### What is LexMed's Data Usage and Retention Policy?
-        LexMed respects your data privacy by retaining transcripts only until you choose to delete them from our web app. We use customer data solely to facilitate access and do not employ it for other purposes. LexMed is committed to non-disclosure of customer data to third parties, except as required for operations through OpenAI's API.
-
-        #### Why Do I Need A Hearing Transcript?
-        Hearing Echo transforms raw audio into a structured narrative, streamlining the review process and saving you time and resources. This tool allows for easy referencing and citing of key testimonies in post-hearing objections and appeals.
-
-        #### Are Your Services Secure?
-        We adhere to the rigorous security best practices defined by Amazon Web Services (AWS), ensuring the utmost security of your data. AWS's guidelines exceed general SOC 2 standards, providing an additional layer of data protection.
-        """
-    )
-
     st.markdown(
         """
         ### Why Choose LexMed for Your Practice?
@@ -110,13 +87,6 @@ with sidebar_right:
 
         #### Commitment to Continuous Improvement
         - We are committed to continuous evolution, consistently integrating the latest technological advancements to offer superior services. Our goal is to continually enhance our offerings to better serve your practice.
-        """
-    )
-
-    st.markdown(
-        """
-        ### Join the LexMed Community
-        Become a part of the LexMed community and experience how our innovative solutions can transform your Social Security Disability practice. Reach out to us to learn more or to schedule a demo.
         """
     )
 
@@ -158,29 +128,21 @@ with main_container:
     """
     st.markdown(process, unsafe_allow_html=True)
 
-    deepgram_api_key = st.text_input("Enter your Deepgram API key:", type="password")
-    openai_api_key = st.text_input("Enter your OpenAI API key:", type="password")
+uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
 
-    uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
-
-    custom_prompt = None
-
-    custom_prompt = st.text_input("Enter a custom prompt:", value="Clean up and format the following audio transcription:")
+    system_prompt = st.text_input(value=SYSTEM_PROMPT)
 
     if st.button("Clean up Transcript"):
         if uploaded_audio:
-            if deepgram_api_key and openai_api_key:
-                st.markdown("Transcribing the audio...")
-                transcript = transcribe_audio(deepgram_api_key, uploaded_audio)
-                st.markdown(f"### Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript}</code></pre></p></details>", unsafe_allow_html=True)
+            st.markdown("Transcribing the audio...")
+            transcript = transcribe_audio(uploaded_audio)
+            st.markdown(f"### Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript}</code></pre></p></details>", unsafe_allow_html=True)
 
-                st.markdown("Cleaning up the transcription...")
-                if custom_prompt:
-                    cleaned_transcript = cleanup_transcript(openai_api_key, transcript, "gpt-4", custom_prompt)
-                else:
-                    cleaned_transcript = cleanup_transcript(openai_api_key, transcript, "gpt-4")
-
-                st.markdown(f"### Cleaned Transcript:")
-                st.write(cleaned_transcript)
+            st.markdown("Cleaning up the transcription...")
+            if custom_prompt:
+                cleaned_transcript = cleanup_transcript(transcript, "gpt-4", system_prompt)
             else:
-                st.error("Please enter valid Deepgram and OpenAI API keys.")
+                cleaned_transcript = cleanup_transcript(transcript, "gpt-4", SYSTEM_PROMPT)
+
+            st.markdown(f"### Cleaned Transcript:")
+            st.write(cleaned_transcript)
