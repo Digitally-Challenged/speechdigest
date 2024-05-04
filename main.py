@@ -6,8 +6,8 @@ import theme
 st.set_page_config(**theme.transcription_config)
 
 # Set brand colors
-primary_color = "#17b0dd"
-secondary_color = "#3d3d6b"
+primary_color = "#3d3d6b"
+secondary_color = "#17b0dd"
 background_color = "#fefefe"
 
 # Set fonts
