@@ -6,7 +6,7 @@ import theme
 st.set_page_config(**theme.transcription_config)
 
 title = """
-    <h1 style="color:#32CD32; font-family:sans-serif;">🎙️ Audio Transcription and Cleanup 🎙️</h1>
+    <h1 style="color:#32CD32; font-family:sans-serif;">🎙️ LexMed Hearing Echo 🎙️</h1>
 """
 st.markdown(title, unsafe_allow_html=True)
 st.write("Upload an audio file, transcribe it using Deepgram, and clean up the transcription using GPT-4.")
