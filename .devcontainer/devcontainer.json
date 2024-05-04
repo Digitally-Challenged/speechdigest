@@ -1,6 +1,3 @@
-Based on the updated script and dependencies, you can modify the `.devcontainer/devcontainer.json` file to include the necessary configurations for your project. Here's the updated `devcontainer.json` file:
-
-```json
 {
   "name": "Python 3",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
