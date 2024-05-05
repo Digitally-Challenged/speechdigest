@@ -68,25 +68,18 @@ with sidebar_right:
         """
         ### Why Choose LexMed for Your Practice?
         #### Unmatched Expertise
-        As founders and seasoned Social Security Disability attorneys, we have a deep understanding of the sector's intricacies. Our team's direct experience in disability law equips us with unique insights into the specific needs and challenges of legal professionals in this area, setting us apart in the field.
+        As founders and seasoned Social Security Disability attorneys, we have a deep understanding of the sector's intricacies. 
 
         #### Elevating Case Preparation and Strategy
-        - LexMed offers more than just accurate hearing transcripts; we provide powerful tools for effective analysis and utilization of this information. By transforming hearing data into insightful and organized content, we empower you to build stronger cases, grounded in robust evidence and coherent narratives.
+        - LexMed offers more than just accurate hearing transcripts; we transform hearing data into insightful and organized content.
 
         #### Transforming Traditional Hearing Analysis
-        - Forget the days of tediously listening to long audio recordings. LexMed's cutting-edge technology efficiently converts spoken words into structured, actionable text, enabling legal teams to concentrate on more critical aspects of case preparation and strategy development.
+        - Forget the days of tediously listening to long audio recordings. LexMed's cutting-edge technology efficiently converts spoken words into structured, actionable text!
 
         #### Time-Saving Technology
-        - LexMed's Hearing Echo is designed to save you valuable hours. It expedites case preparation without sacrificing detail or accuracy, ensuring that you have more time for higher-value legal tasks.
-
+        - LexMed's Hearing Echo is designed to save you valuable hours.
         #### Enhanced Accuracy and Clarity
         - Our transcripts are comprehensive tools that offer a deeper understanding and more precise advocacy. They go beyond mere transcription to provide clarity and insight into each case.
-
-        #### Streamlined Workflow Integration
-        - Designed for seamless integration into your existing workflow, our system enhances efficiency without disrupting your established processes, fitting effortlessly into your practice.
-
-        #### Commitment to Continuous Improvement
-        - We are committed to continuous evolution, consistently integrating the latest technological advancements to offer superior services. Our goal is to continually enhance our offerings to better serve your practice.
         """
     )
 
@@ -105,16 +98,7 @@ with main_container:
             <li><strong>High Accuracy:</strong> We promise highly accurate transcriptions, capturing each word spoken with meticulous precision.</li>
             <li><strong>Summary and Calls to Action:</strong> Get not just transcripts, but summaries highlighting the main points and actionable insights for your legal strategy.</li>
         </ul>
-    """
-    st.markdown(features, unsafe_allow_html=True)
 
-    upcoming = """
-        <h3>Upcoming Features</h3>
-        <ul>
-            <li><strong>Expert Auditing:</strong> A robust review system to ensure the accuracy of vocational and medical expert testimonies.</li>
-            <li><strong>Procedural Auditing:</strong> Insightful analysis of potential procedural errors by the Administrative Law Judge (ALJ).</li>
-        </ul>
-    """
     st.markdown(upcoming, unsafe_allow_html=True)
 
     process = """
