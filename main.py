@@ -120,5 +120,15 @@ with main_container:
         </ol>
     """
     st.markdown(process, unsafe_allow_html=True)
+if st.button("Clean up Transcript"):
+    if uploaded_audio:
+        st.markdown("Transcribing the audio...")
+        transcript = transcribe_audio(uploaded_audio)
+        st.markdown(f"### Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript}</code></pre></p></details>", unsafe_allow_html=True)
 
+        st.markdown("Cleaning up the transcription...")
+        cleaned_transcript = await cleanup_transcript(transcript, "gpt-4", custom_prompt)
+
+        st.markdown(f"### Cleaned Transcript:")
+        st.write(cleaned_transcript)
     uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
