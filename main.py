@@ -75,7 +75,7 @@ with sidebar_right:
     )
 # Main content with application details
 with main_container:
-    st.markdown("<h1>🌟 LexMed: Leveraging AI to Elevate Disability Advocacy</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>⚖️🤖 LexMed: Leveraging AI to Elevate Disability Advocacy⚖️🤖</h1>", unsafe_allow_html=True)
     st.markdown(
         """
         <h3>🎧 Introducing Hearing Echo – A Revolutionary Feature in Hearing Transcription</h3>
