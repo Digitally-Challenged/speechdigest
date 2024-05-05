@@ -98,7 +98,16 @@ with main_container:
             <li><strong>High Accuracy:</strong> We promise highly accurate transcriptions, capturing each word spoken with meticulous precision.</li>
             <li><strong>Summary and Calls to Action:</strong> Get not just transcripts, but summaries highlighting the main points and actionable insights for your legal strategy.</li>
         </ul>
+    """
+    st.markdown(features, unsafe_allow_html=True)
 
+    upcoming = """
+        <h3>Upcoming Features</h3>
+        <ul>
+            <li><strong>Expert Auditing:</strong> A robust review system to ensure the accuracy of vocational and medical expert testimonies.</li>
+            <li><strong>Procedural Auditing:</strong> Insightful analysis of potential procedural errors by the Administrative Law Judge (ALJ).</li>
+        </ul>
+    """
     st.markdown(upcoming, unsafe_allow_html=True)
 
     process = """
@@ -112,4 +121,4 @@ with main_container:
     """
     st.markdown(process, unsafe_allow_html=True)
 
-uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
+    uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
