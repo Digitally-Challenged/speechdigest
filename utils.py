@@ -101,7 +101,6 @@ async def process_chunks_and_aggregate(chunked_data):
 
     return aggregated_json
 
-# Create a function to transcribe audio using Deepgram
 def transcribe_audio(audio_file):
     deepgram = Deepgram(DEEPGRAM_API_KEY)
     with BytesIO(audio_file.read()) as audio_bytes:
