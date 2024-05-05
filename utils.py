@@ -7,7 +7,7 @@ import aiohttp
 from io import BytesIO
 import tempfile
 from deepgram import Deepgram
-from system_prompt import SYSTEM_PROMPT
+from system_prompt import system_prompt
 
 # Retrieve the API keys from environment variables
 DEEPGRAM_API_KEY = os.environ.get("DEEPGRAM_API_KEY")
