@@ -3,7 +3,6 @@ import json
 import logging
 import openai
 import asyncio
-import aiohttp
 from io import BytesIO
 import tempfile
 from deepgram import Deepgram
@@ -40,18 +39,14 @@ def chunk_transcript(transcript_data, max_tokens=700, overlap_tokens=200):
 
     return chunks
 
-async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4-turbo-2024-04-09"|):
-      try:
-        response = await asyncio.to_thread(openai.chat.completions.create,
-            model=model，
+async def send_to_gpt4(chunk_data, model="gpt-4-turbo-2024-04-09"):
+    try:
+        response = await asyncio.to_thread(openai.ChatCompletion.create,
+            model=model,
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an excellent optimizer of raw ARS transcripts. Your output is limited to JSON."
-                },
-                {
-                    "role": "user",
-                    "content": system_prompt
+                    "content": system_prompt  # System prompt used here
                 },
                 {
                     "role": "user",
@@ -60,7 +55,7 @@ async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4-turbo-2024-04-09"
             ]
         )
         if response.choices:
-            return response.choices[0].message.content
+            return response.choices[0].content
         else:
             logging.info("No content returned in the response.")
             return None
@@ -68,9 +63,9 @@ async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4-turbo-2024-04-09"
         logging.error(f"Error sending data to GPT-4: {e}")
         return None
 
-async def fetch_response(session, chunk_data):
+async def fetch_response(chunk_data):
     try:
-        response = await send_to_gpt4(system_prompt, chunk_data)
+        response = await send_to_gpt4(chunk_data)
         return response
     except Exception as e:
         logging.error(f"Error processing chunk data: {e}")
@@ -82,7 +77,7 @@ async def process_chunks_and_aggregate(chunked_data):
     async with aiohttp.ClientSession() as session:
         tasks = []
         for chunk_data in chunked_data:
-            task = asyncio.ensure_future(fetch_response(session, chunk_data))
+            task = asyncio.ensure_future(fetch_response(chunk_data))
             tasks.append(task)
         responses = await asyncio.gather(*tasks, return_exceptions=True)
 
@@ -121,7 +116,7 @@ def transcribe_audio(audio_file):
     return transcript
 
 # Create a function to clean up the transcript using GPT-4
-async def cleanup_transcript(transcript, model, system_prompt):
+async def cleanup_transcript(transcript, model="gpt-4-turbo-2024-04-09"):
     openai.api_key = OPENAI_API_KEY
 
     # Parse the transcript into JSON format
@@ -137,3 +132,4 @@ async def cleanup_transcript(transcript, model, system_prompt):
     cleaned_transcript = '\n'.join([entry['text'] for entry in aggregated_json])
 
     return cleaned_transcript
+
