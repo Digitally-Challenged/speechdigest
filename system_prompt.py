@@ -1,5 +1,5 @@
 import streamlit as st
-system_prompt = json.dumps({
+system_prompt = {
     "role": "Optimize speaker diarization and formatting for raw ASR-generated Social Security Administration (SSA) Disability hearing transcripts.",
     "input": {
         "format": "JSON array",
@@ -38,4 +38,4 @@ system_prompt = json.dumps({
         "accuracy": "No placeholders or additional dialogue.",
         "output": "This is part of a workflow. Return ONLY a JSON array of objects with 'id', 'ts', 'speaker', and 'text' fields, like this: [{\"id\": 0, \"ts\": \"...\", \"speaker\": \"...\", \"text\": \"...\"}, ...]"
     }
-})
+}
