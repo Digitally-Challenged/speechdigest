@@ -75,11 +75,29 @@ with sidebar_right:
     )
 
 # Main content with application details
+Incorporating emojis into your Streamlit application can add a friendly, engaging touch to the interface, making it more interactive and visually appealing. Here’s how you can incorporate emojis effectively in your application:
+
+1. **Titles and Headings**: Use emojis to draw attention to specific sections or to add personality to headings. This can make the interface more relatable and less formal.
+
+2. **Buttons and Calls to Action**: Adding emojis to buttons can make the calls to action more engaging. For instance, a coffee emoji next to "Relax and grab a coffee" enhances the casual, friendly tone.
+
+3. **List Items**: Emojis can be used as bullet points or next to key features and upcoming features to visually represent the point being made.
+
+4. **Success and Error Messages**: Use emojis in feedback messages to users, such as success notifications (✅) or errors (❌). This helps in conveying the tone along with the message.
+
+5. **Sidebar Information**: Emphasize certain aspects of the sidebar content with relevant emojis to make the text less dense and more enjoyable to read.
+
+6. **File Uploader and Text Inputs**: Place emojis next to input fields to visually explain what the input is for, making the user interface friendlier.
+
+Here's an example of how to incorporate emojis into your existing Streamlit script:
+
+```python
+# Main content with application details
 with main_container:
-    st.markdown("<h1>LexMed: Leveraging AI to Elevate Disability Advocacy</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>🌟 LexMed: Leveraging AI to Elevate Disability Advocacy</h1>", unsafe_allow_html=True)
     st.markdown(
         """
-        <h3>Introducing Hearing Echo – A Revolutionary Feature in Hearing Transcription</h3>
+        <h3>🎧 Introducing Hearing Echo – A Revolutionary Feature in Hearing Transcription</h3>
         <p>Discover the flagship feature of LexMed, Hearing Echo, designed for Social Security Disability representatives. This tool revolutionizes hearing transcript handling, offering Federal Court-level organized and high-quality transcripts.</p>
         """,
         unsafe_allow_html=True
@@ -88,12 +106,12 @@ with main_container:
     # Key features
     st.markdown(
         """
-        <h3>Key Features of Hearing Echo</h3>
+        <h3>🔑 Key Features of Hearing Echo</h3>
         <ul>
-            <li><strong>Speaker Labeling:</strong> Clear identification of speakers in the transcript.</li>
-            <li><strong>Time Stamps:</strong> Includes precise time stamps for easy navigation.</li>
-            <li><strong>High Accuracy:</strong> Captures each word with meticulous precision.</li>
-            <li><strong>Summary and Calls to Action:</strong> Provides summaries and actionable insights for your legal strategy.</li>
+            <li>👥 <strong>Speaker Labeling:</strong> Clear identification of speakers in the transcript.</li>
+            <li>⏱️ <strong>Time Stamps:</strong> Includes precise time stamps for easy navigation.</li>
+            <li>🎯 <strong>High Accuracy:</strong> Captures each word with meticulous precision.</li>
+            <li>📝 <strong>Summary and Calls to Action:</strong> Provides summaries and actionable insights for your legal strategy.</li>
         </ul>
         """,
         unsafe_allow_html=True
@@ -102,13 +120,29 @@ with main_container:
     # Upcoming features
     st.markdown(
         """
-        <h3>Upcoming Features</h3>
+        <h3>🔜 Upcoming Features</h3>
         <ul>
-            <li><strong>Expert Auditing:</strong> A robust system to verify expert testimonies.</li>
-            <li><strong>Procedural Auditing:</strong> Analysis of potential procedural errors by ALJs.</li>
+            <li>🔍 <strong>Expert Auditing:</strong> A robust system to verify expert testimonies.</li>
+            <li>📊 <strong>Procedural Auditing:</strong> Analysis of potential procedural errors by ALJs.</li>
         </ul>
         """,
         unsafe_allow_html=True
+    )
+
+    # Process description
+    st.markdown(
+        """
+        <h3>🔄 Our Streamlined Process</h3>
+        <ol>
+            <li>📤 <strong>Upload</strong> your .ogg hearing audio file.</li>
+            <li>📝 <strong>Submit</strong> the audio for transcription.</li>
+            <li>☕ <strong>Relax</strong> and grab a coffee.</li>
+            <li>📥 <strong>Download</strong> your transcript in PDF or TXT format, ready for use.</li>
+        </ol>
+        """,
+        unsafe_allow_html=True
+    )
+    
     )
 
     # Process description
