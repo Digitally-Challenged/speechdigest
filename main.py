@@ -73,25 +73,6 @@ with sidebar_right:
         """,
         unsafe_allow_html=True
     )
-
-# Main content with application details
-Incorporating emojis into your Streamlit application can add a friendly, engaging touch to the interface, making it more interactive and visually appealing. Here’s how you can incorporate emojis effectively in your application:
-
-1. **Titles and Headings**: Use emojis to draw attention to specific sections or to add personality to headings. This can make the interface more relatable and less formal.
-
-2. **Buttons and Calls to Action**: Adding emojis to buttons can make the calls to action more engaging. For instance, a coffee emoji next to "Relax and grab a coffee" enhances the casual, friendly tone.
-
-3. **List Items**: Emojis can be used as bullet points or next to key features and upcoming features to visually represent the point being made.
-
-4. **Success and Error Messages**: Use emojis in feedback messages to users, such as success notifications (✅) or errors (❌). This helps in conveying the tone along with the message.
-
-5. **Sidebar Information**: Emphasize certain aspects of the sidebar content with relevant emojis to make the text less dense and more enjoyable to read.
-
-6. **File Uploader and Text Inputs**: Place emojis next to input fields to visually explain what the input is for, making the user interface friendlier.
-
-Here's an example of how to incorporate emojis into your existing Streamlit script:
-
-```python
 # Main content with application details
 with main_container:
     st.markdown("<h1>🌟 LexMed: Leveraging AI to Elevate Disability Advocacy</h1>", unsafe_allow_html=True)
