@@ -40,11 +40,10 @@ def chunk_transcript(transcript_data, max_tokens=700, overlap_tokens=200):
 
     return chunks
 
-async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4"):
-    """Send structured system description to GPT-4 and return the response."""
-    try:
-        response = await asyncio.to_thread(openai.ChatCompletion.create,
-            model=model,
+async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4-turbo-2024-04-09"|):
+      try:
+        response = await asyncio.to_thread(openai.chat.completions.create,
+            model=model，
             messages=[
                 {
                     "role": "system",
@@ -71,7 +70,7 @@ async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4"):
 
 async def fetch_response(session, chunk_data):
     try:
-        response = await send_to_gpt4(SYSTEM_PROMPT, chunk_data)
+        response = await send_to_gpt4(system_prompt, chunk_data)
         return response
     except Exception as e:
         logging.error(f"Error processing chunk data: {e}")
@@ -122,7 +121,7 @@ def transcribe_audio(audio_file):
     return transcript
 
 # Create a function to clean up the transcript using GPT-4
-async def cleanup_transcript(transcript, model, custom_prompt=None):
+async def cleanup_transcript(transcript, model, system_prompt):
     openai.api_key = OPENAI_API_KEY
 
     # Parse the transcript into JSON format
