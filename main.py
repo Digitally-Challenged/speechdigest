@@ -129,31 +129,3 @@ with main_container:
     st.markdown(process, unsafe_allow_html=True)
 
 uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
-
-with main_container:
-    title = f"<h1>LexMed: Leveraging AI to Elevate Disability Advocacy to New Heights</h1>"
-    st.markdown(title, unsafe_allow_html=True)
-
-    intro = f"<h3>Introducing Hearing Echo – A Game-Changer in Hearing Transcription</h3><p>At LexMed, we are excited to unveil our flagship feature - Hearing Echo! Specially designed for Social Security Disability representatives, Hearing Echo revolutionizes the way you handle hearing transcripts. Say goodbye to the laborious task of manually sifting through hours of audio for key insights. Welcome to an era where high-quality, organized transcripts, akin to those used in Federal Court, are just a few clicks away.</p>"
-    st.markdown(intro, unsafe_allow_html=True)
-
-    # ... (main content remains the same) ...
-
-    uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
-
-    custom_prompt = st.text_input("Enter a custom prompt:", value=SYSTEM_PROMPT)
-
-    if st.button("Clean up Transcript"):
-        if uploaded_audio:
-            st.markdown("Transcribing the audio...")
-            transcript = transcribe_audio(uploaded_audio)
-            st.markdown(f"### Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript}</code></pre></p></details>", unsafe_allow_html=True)
-
-            st.markdown("Cleaning up the transcription...")
-            if custom_prompt:
-                cleaned_transcript = cleanup_transcript(transcript, "gpt-4", custom_prompt)
-            else:
-                cleaned_transcript = cleanup_transcript(transcript, "gpt-4", SYSTEM_PROMPT)
-
-            st.markdown(f"### Cleaned Transcript:")
-            st.write(cleaned_transcript)
