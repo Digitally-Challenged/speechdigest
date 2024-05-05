@@ -54,10 +54,6 @@ sidebar_right = st.sidebar.container()
 # Main content container
 main_container = st.container()
 
-# Sidebar left with placeholders for images
-with sidebar_left:
-    st.image(["path/to/image1.jpg", "path/to/image2.jpg", "path/to/image3.jpg"], use_column_width=True)
-
 # Sidebar right with information about the service
 with sidebar_right:
     st.markdown(
