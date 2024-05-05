@@ -1,14 +1,109 @@
+import os
+import json
+import logging
 import openai
+import asyncio
+import aiohttp
 from io import BytesIO
 import tempfile
-import os
-import streamlit as st
 from deepgram import Deepgram
-import requests
+from system_prompt import SYSTEM_PROMPT
+
+# Retrieve the API keys from environment variables
+DEEPGRAM_API_KEY = os.environ.get("DEEPGRAM_API_KEY")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+def count_tokens(text):
+    """ Count English words in a given text efficiently. """
+    return len(text.split())
+
+def chunk_transcript(transcript_data, max_tokens=700, overlap_tokens=200):
+    """ Improved function with batch file writing and optimized processing. """
+    chunks = []
+    current_chunk = []
+    current_token_count = 0
+
+    for entry in transcript_data:
+        entry_text = entry['text']
+        entry_token_count = count_tokens(entry_text)
+
+        if current_token_count + entry_token_count > max_tokens:
+            chunks.append(current_chunk)
+            current_chunk = current_chunk[-1:]  # Keep the last entry for overlap
+            current_token_count = count_tokens(current_chunk[-1]['text'])
+
+        current_chunk.append(entry)
+        current_token_count += entry_token_count
+
+    if current_chunk:
+        chunks.append(current_chunk)
+
+    return chunks
+
+async def send_to_gpt4(system_prompt, chunk_data, model="gpt-4"):
+    """Send structured system description to GPT-4 and return the response."""
+    try:
+        response = await asyncio.to_thread(openai.ChatCompletion.create,
+            model=model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an excellent optimizer of raw ARS transcripts. Your output is limited to JSON."
+                },
+                {
+                    "role": "user",
+                    "content": system_prompt
+                },
+                {
+                    "role": "user",
+                    "content": json.dumps(chunk_data)
+                }
+            ]
+        )
+        if response.choices:
+            return response.choices[0].message.content
+        else:
+            logging.info("No content returned in the response.")
+            return None
+    except Exception as e:
+        logging.error(f"Error sending data to GPT-4: {e}")
+        return None
+
+async def fetch_response(session, chunk_data):
+    try:
+        response = await send_to_gpt4(SYSTEM_PROMPT, chunk_data)
+        return response
+    except Exception as e:
+        logging.error(f"Error processing chunk data: {e}")
+        return None
+
+async def process_chunks_and_aggregate(chunked_data):
+    responses = []
+
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for chunk_data in chunked_data:
+            task = asyncio.ensure_future(fetch_response(session, chunk_data))
+            tasks.append(task)
+        responses = await asyncio.gather(*tasks, return_exceptions=True)
+
+    aggregated_json = []
+    for response in responses:
+        if response:
+            try:
+                chunk_data = json.loads(response)
+                aggregated_json.extend(chunk_data)
+            except Exception as e:
+                logging.error(f"Error parsing response: {e}")
+
+    # Sort the aggregated JSON based on the 'id' field
+    aggregated_json = sorted(aggregated_json, key=lambda x: x['id'])
+
+    return aggregated_json
 
 # Create a function to transcribe audio using Deepgram
-def transcribe_audio(deepgram_api_key, audio_file):
-    deepgram = Deepgram(deepgram_api_key)
+def transcribe_audio(audio_file):
+    deepgram = Deepgram(DEEPGRAM_API_KEY)
     with BytesIO(audio_file.read()) as audio_bytes:
         # Get the extension of the uploaded file
         file_extension = os.path.splitext(audio_file.name)[-1]
@@ -27,80 +122,20 @@ def transcribe_audio(deepgram_api_key, audio_file):
 
     return transcript
 
-def call_gpt(api_key, prompt, model):
-    openai.api_key = api_key
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.0,
-        max_tokens=400,
-    )
-
-    return response['choices'][0]['message']['content']
-
-def call_gpt_streaming(api_key, prompt, model):
-    openai.api_key = api_key
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7,
-        stream=True
-    )
-
-    collected_events = []
-    completion_text = ''
-    placeholder = st.empty()
-
-    for event in response:
-        collected_events.append(event)
-        # Check if content key exists
-        if "content" in event['choices'][0]["delta"]:
-            event_text = event['choices'][0]["delta"]["content"]
-            completion_text += event_text
-            placeholder.write(completion_text)  # Write the received text
-    return completion_text
-
 # Create a function to clean up the transcript using GPT-4
-def cleanup_transcript(api_key, transcript, model, custom_prompt=None):
-    openai.api_key = api_key
-    prompt = f"Please clean up and format the following audio transcription: {transcript}"
-    if custom_prompt:
-        prompt = f"{custom_prompt}\n\n{transcript}"
+async def cleanup_transcript(transcript, model, custom_prompt=None):
+    openai.api_key = OPENAI_API_KEY
 
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.5,
-        max_tokens=150,
-    )
+    # Parse the transcript into JSON format
+    transcript_data = [{"id": i, "text": text} for i, text in enumerate(transcript.split('\n'), start=1)]
 
-    cleaned_transcript = response['choices'][0]['message']['content']
+    # Chunk the transcript data
+    chunked_data = chunk_transcript(transcript_data)
+
+    # Process the chunks and aggregate the results
+    aggregated_json = await process_chunks_and_aggregate(chunked_data)
+
+    # Convert the aggregated JSON back to text format
+    cleaned_transcript = '\n'.join([entry['text'] for entry in aggregated_json])
+
     return cleaned_transcript
-
-# Streamlit app
-def main():
-    st.title("Audio Transcription and Cleanup")
-
-    # Get the Deepgram API key from the user
-    deepgram_api_key = st.text_input("Enter your Deepgram API key:")
-
-    # Get the OpenAI API key from the user
-    openai_api_key = st.text_input("Enter your OpenAI API key:")
-
-    # Upload audio file
-    audio_file = st.file_uploader("Upload an audio file", type=["wav", "mp3", "m4a"])
-
-    if audio_file is not None:
-        # Transcribe the audio using Deepgram
-        transcript = transcribe_audio(deepgram_api_key, audio_file)
-        st.subheader("Transcription")
-        st.write(transcript)
-
-        # Clean up the transcript using GPT-4
-        if st.button("Clean up Transcript"):
-            cleaned_transcript = cleanup_transcript(openai_api_key, transcript, "gpt-4")
-            st.subheader("Cleaned Transcript")
-            st.write(cleaned_transcript)
-
-if __name__ == "__main__":
-    main()
