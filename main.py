@@ -124,20 +124,6 @@ with main_container:
         unsafe_allow_html=True
     )
 
-    # Process description
-    st.markdown(
-        """
-        <h3>Our Streamlined Process</h3>
-        <ol>
-            <li><strong>Upload</strong> your .ogg hearing audio file.</li>
-            <li><strong>Submit</strong> the audio for transcription.</li>
-            <li><strong>Relax</strong> and grab a coffee.</li>
-            <li><strong>Download</strong> your transcript in PDF or TXT format, ready for use.</li>
-        </ol>
-        """,
-        unsafe_allow_html=True
-    )
-
     # File uploader and custom prompt input
     uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
     custom_prompt = st.text_input("Enter a custom prompt:", value="Clean up and format the following audio transcription:")
