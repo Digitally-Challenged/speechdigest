@@ -1,4 +1,5 @@
 import streamlit as st
+import asyncio
 from utils import transcribe_audio, cleanup_transcript
 import theme
 
@@ -120,6 +121,14 @@ with main_container:
         </ol>
     """
     st.markdown(process, unsafe_allow_html=True)
+    
+async def cleanup_transcript_async(transcript, custom_prompt):
+    cleaned_transcript = await cleanup_transcript(transcript, "gpt-4", custom_prompt)
+    return cleaned_transcript
+
+uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
+custom_prompt = st.text_input("Enter a custom prompt:", value="Clean up and format the following audio transcription:")
+
 if st.button("Clean up Transcript"):
     if uploaded_audio:
         st.markdown("Transcribing the audio...")
@@ -127,8 +136,7 @@ if st.button("Clean up Transcript"):
         st.markdown(f"### Transcription:\n\n<details><summary>Click to view</summary><p><pre><code>{transcript}</code></pre></p></details>", unsafe_allow_html=True)
 
         st.markdown("Cleaning up the transcription...")
-        cleaned_transcript = await cleanup_transcript(transcript, "gpt-4", custom_prompt)
+        cleaned_transcript = asyncio.run(cleanup_transcript_async(transcript, custom_prompt))
 
         st.markdown(f"### Cleaned Transcript:")
         st.write(cleaned_transcript)
-    uploaded_audio = st.file_uploader("Upload an audio file", type=['ogg'])
