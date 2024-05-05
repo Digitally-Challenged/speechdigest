@@ -123,8 +123,6 @@ with main_container:
         """,
         unsafe_allow_html=True
     )
-    
-    )
 
     # Process description
     st.markdown(
